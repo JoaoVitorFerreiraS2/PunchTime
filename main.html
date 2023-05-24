@@ -35,13 +35,13 @@
     </table>
 
     <script>
-        // Função para formatar 1 em 01
+        // Função para formatar 1 em 01 /JVF
         const zeroFill = n => {
             return ('0' + n).slice(-2);
         }
 
-        // Função para obter a data no formato dd/mm/aaaa
-        const obterDataFormatada = () => {
+        // Função para obter a data no formato dd/mm/aaaa /JVF
+        const obterDataFormatada = () => { 
             const now = new Date();
             const dia = zeroFill(now.getDate());
             const mes = zeroFill(now.getMonth() + 1);
@@ -49,7 +49,7 @@
             return `${dia}/${mes}/${ano}`;
         }
 
-        // Função para adicionar o horário e a data na tabela
+        // Função para adicionar o horário e a data na tabela /JVF
         const adicionarRegistroNaTabela = (data, horario, index) => {
             const tabela = document.getElementById('horariosRegistrados');
             const row = tabela.insertRow(-1);
@@ -61,8 +61,8 @@
             cellAcao.innerHTML = `<button onclick="removerRegistro(${index})">Remover</button>`;
         }
 
-        // Função para bater ponto
-        const baterPonto = () => {
+        // Função para bater ponto /JVF
+        const baterPonto = () => { 
             const dataFormatada = obterDataFormatada();
             const now = new Date();
             const horario = zeroFill(now.getHours()) + ':' + zeroFill(now.getMinutes()) + ':' + zeroFill(now.getSeconds());
@@ -70,7 +70,7 @@
             salvarRegistrosNoArmazenamentoLocal();
         }
 
-        // Função para remover um registro específico da tabela
+        // Função para remover um registro específico da tabela /JVF
         const removerRegistro = (index) => {
             const registros = obterRegistrosDoArmazenamentoLocal();
             registros.splice(index, 1);
@@ -78,7 +78,7 @@
             atualizarTabela();
         }
 
-        // Função para limpar todos os registros
+        // Função para limpar todos os registros /JVF
         const limparRegistros = () => {
             if (confirm('Tem certeza que deseja limpar todos os registros?')) {
                 limparRegistrosNoArmazenamentoLocal();
@@ -86,7 +86,7 @@
             }
         }
 
-        // Função para salvar os registros em uma nova janela ou pop-up
+        // Função para salvar os registros em uma nova janela ou pop-up /JVF
         const salvarRegistros = () => {
             const registros = obterRegistrosDoArmazenamentoLocal();
             const registrosText = registros.map(registro => `${registro.data} - ${registro.hora}`).join('\n');
@@ -95,13 +95,13 @@
             newWindow.document.close();
         }
 
-        // Função para obter o próximo índice disponível para registro
+        // Função para obter o próximo índice disponível para registro /JVF
         const getProximoIndice = () => {
             const registros = obterRegistrosDoArmazenamentoLocal();
             return registros.length;
         }
 
-        // Função para obter os registros do armazenamento local
+        // Função para obter os registros do armazenamento local /JVF
         const obterRegistrosDoArmazenamentoLocal = () => {
             return JSON.parse(localStorage.getItem('registros')) || [];
         }
@@ -111,12 +111,12 @@
             localStorage.setItem('registros', JSON.stringify(registros));
         }
 
-        // Função para limpar todos os registros no armazenamento local
+        // Função para limpar todos os registros no armazenamento local /JVF
         const limparRegistrosNoArmazenamentoLocal = () => {
             localStorage.removeItem('registros');
         }
 
-        // Função para atualizar a tabela com os registros salvos no armazenamento local
+        // Função para atualizar a tabela com os registros salvos no armazenamento local /JVF
         const atualizarTabela = () => {
             const tabela = document.getElementById('horariosRegistrados');
             tabela.innerHTML = '';
@@ -127,7 +127,7 @@
             });
         }
 
-        // Função para salvar os registros no armazenamento local
+        // Função para salvar os registros no armazenamento local /JVF
         const salvarRegistrosNoArmazenamentoLocal = () => {
             const registros = obterRegistrosDoArmazenamentoLocal();
             const now = new Date();
@@ -147,7 +147,7 @@
             document.getElementById('Horario').innerHTML = horario;
         }, 1000);
 
-        // Preencher a tabela com os registros salvos no armazenamento local
+        // Preencher a tabela com os registros salvos no armazenamento local /JVF
         atualizarTabela();
     </script>
 </body>
