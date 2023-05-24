@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bater Ponto</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1>Bem Vindo João Vitor</h1>
+
+    <div class="baterPontoPai">
+        <button class="baterPontoFilho" onclick="limparRegistros()">Limpar</button>
+        <button class="baterPontoFilho" onclick="baterPonto()">Bater Ponto</button>
+        <button class="baterPontoFilho" onclick="salvarRegistros()">Salvar</button>
+    </div>
+
+    <div class="HorarioPai">
+        <div id="Horario"></div>
+    </div>
+
+    <table class="tabelaHorarios">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Hora</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody id="horariosRegistrados"></tbody>
+    </table>
+
+    <script>
+        // Função para formatar 1 em 01
+        const zeroFill = n => {
+            return ('0' + n).slice(-2);
+        }
+
+        // Função para obter a data no formato dd/mm/aaaa
+        const obterDataFormatada = () => {
+            const now = new Date();
+            const dia = zeroFill(now.getDate());
+            const mes = zeroFill(now.getMonth() + 1);
+            const ano = now.getFullYear();
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Função para adicionar o horário e a data na tabela
+        const adicionarRegistroNaTabela = (data, horario, index) => {
+            const tabela = document.getElementById('horariosRegistrados');
+            const row = tabela.insertRow(-1);
+            const cellData = row.insertCell(0);
+            const cellHorario = row.insertCell(1);
+            const cellAcao = row.insertCell(2);
+            cellData.innerHTML = data;
+            cellHorario.innerHTML = horario;
+            cellAcao.innerHTML = `<button onclick="removerRegistro(${index})">Remover</button>`;
+        }
+
+        // Função para bater ponto
+        const baterPonto = () => {
+            const dataFormatada = obterDataFormatada();
+            const now = new Date();
+            const horario = zeroFill(now.getHours()) + ':' + zeroFill(now.getMinutes()) + ':' + zeroFill(now.getSeconds());
+            adicionarRegistroNaTabela(dataFormatada, horario, getProximoIndice());
+            salvarRegistrosNoArmazenamentoLocal();
+        }
+
+        // Função para remover um registro específico da tabela
+        const removerRegistro = (index) => {
+            const registros = obterRegistrosDoArmazenamentoLocal();
+            registros.splice(index, 1);
+            atualizarRegistrosNoArmazenamentoLocal(registros);
+            atualizarTabela();
+        }
+
+        // Função para limpar todos os registros
+        const limparRegistros = () => {
+            if (confirm('Tem certeza que deseja limpar todos os registros?')) {
+                limparRegistrosNoArmazenamentoLocal();
+                atualizarTabela();
+            }
+        }
+
+        // Função para salvar os registros em uma nova janela ou pop-up
+        const salvarRegistros = () => {
+            const registros = obterRegistrosDoArmazenamentoLocal();
+            const registrosText = registros.map(registro => `${registro.data} - ${registro.hora}`).join('\n');
+            const newWindow = window.open('', '_blank');
+            newWindow.document.write('<pre>' + registrosText + '</pre>');
+            newWindow.document.close();
+        }
+
+        // Função para obter o próximo índice disponível para registro
+        const getProximoIndice = () => {
+            const registros = obterRegistrosDoArmazenamentoLocal();
+            return registros.length;
+        }
+
+        // Função para obter os registros do armazenamento local
+        const obterRegistrosDoArmazenamentoLocal = () => {
+            return JSON.parse(localStorage.getItem('registros')) || [];
+        }
+
+        // Função para atualizar os registros no armazenamento local
+        const atualizarRegistrosNoArmazenamentoLocal = (registros) => {
+            localStorage.setItem('registros', JSON.stringify(registros));
+        }
+
+        // Função para limpar todos os registros no armazenamento local
+        const limparRegistrosNoArmazenamentoLocal = () => {
+            localStorage.removeItem('registros');
+        }
+
+        // Função para atualizar a tabela com os registros salvos no armazenamento local
+        const atualizarTabela = () => {
+            const tabela = document.getElementById('horariosRegistrados');
+            tabela.innerHTML = '';
+
+            const registros = obterRegistrosDoArmazenamentoLocal();
+            registros.forEach((registro, index) => {
+                adicionarRegistroNaTabela(registro.data, registro.hora, index);
+            });
+        }
+
+        // Função para salvar os registros no armazenamento local
+        const salvarRegistrosNoArmazenamentoLocal = () => {
+            const registros = obterRegistrosDoArmazenamentoLocal();
+            const now = new Date();
+            const horario = zeroFill(now.getHours()) + ':' + zeroFill(now.getMinutes()) + ':' + zeroFill(now.getSeconds());
+            const novoRegistro = {
+                data: obterDataFormatada(),
+                hora: horario
+            };
+            registros.push(novoRegistro);
+            atualizarRegistrosNoArmazenamentoLocal(registros);
+        }
+
+        // Cria intervalo
+        const interval = setInterval(() => {
+            const now = new Date();
+            const horario = zeroFill(now.getHours()) + ':' + zeroFill(now.getMinutes()) + ':' + zeroFill(now.getSeconds());
+            document.getElementById('Horario').innerHTML = horario;
+        }, 1000);
+
+        // Preencher a tabela com os registros salvos no armazenamento local
+        atualizarTabela();
+    </script>
+</body>
+
+</html>

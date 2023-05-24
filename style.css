@@ -1,0 +1,53 @@
+h1{
+    text-align: center;
+    font-size: 36px;
+}
+
+.baterPontoPai{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.baterPontoFilho{
+    margin-top: 24vh;
+    font-size: 24px;
+    border-radius: 5px;
+    cursor:  pointer;
+}
+
+
+.HorarioPai{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+#Horario{
+    margin: 3vh;
+    font-size: 60px;
+}
+
+.tabelaHorarios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabelaHorarios th,
+.tabelaHorarios td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+.tabelaHorarios th:first-child,
+.tabelaHorarios td:first-child {
+    border-left: none;
+    text-align: center;
+}
+
+.tabelaHorarios th:last-child,
+.tabelaHorarios td:last-child {
+    border-right: none;
+    text-align: center;
+}
